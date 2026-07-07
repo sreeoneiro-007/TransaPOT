@@ -609,27 +609,36 @@
         $('applyFilterBtn').disabled = false;
       }
     }
-
+    
     function convertDMYToISO(dateStr) {
       if (!dateStr) return "";
+      
+      // Step 1: Ensure it's a string, take the date part before any space/Time marker
       let cleanStr = String(dateStr).trim().split(/[ T]/)[0];
+      
+      // Step 2: Normalize all slashes into dashes
       cleanStr = cleanStr.replace(/\//g, '-'); 
       
+      // Step 3: If it's already in standard yyyy-MM-dd format, return it immediately
       if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
         return cleanStr;
       }
       
+      // Step 4: If it is in dd-MM-yyyy format, rearrange the elements into yyyy-MM-dd
       let parts = cleanStr.split('-');
       if (parts.length === 3) {
         let d = parts[0];
         let m = parts[1];
         let y = parts[2];
+        
+        // Handle case where year is 4 digits and day is 1-2 digits
         if (d.length <= 2 && y.length === 4) {
           return y + "-" + m.padStart(2, '0') + "-" + d.padStart(2, '0');
         }
       }
       return "";
     }
+
 
     function applySelectiveDateFilter() {
       if (!rawDashboardData) return;
