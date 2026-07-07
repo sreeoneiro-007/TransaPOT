@@ -1,5 +1,5 @@
 // CONFIGURATION: Replace with your deployed Google Apps Script Web App URL
-const BACKEND_URL = "https://google.com";
+const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwKRPK7cxnfFteehJVck88yZIxBY7GgnDWTHbgLo3upzbkqXIHKVCiD-L_gz5_4IKnxTA/exec";
 
 // User Session Definition
 const USER_SESSION = {
