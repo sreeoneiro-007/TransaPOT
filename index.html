@@ -203,7 +203,6 @@
       transition: background-color 0.15s ease, border-color 0.15s ease;
       touch-action: manipulation;
     }
-
     .btn-outlined:hover {
       background-color: rgba(255, 255, 255, 0.03) !important;
       border-color: #475569 !important;
@@ -524,6 +523,10 @@
       $('txMessage').innerText = "Saving data row...";
       $('txMessage').style.color = 'var(--text-muted)';
       $('saveBtn').disabled = true;
+
+      // Unpack HTML5 date field (yyyy-mm-dd) to preserve dd-mm-yyyy for backend insertion
+      let dParts = dateVal.split('-');
+      let payloadDMY = dParts[2] + "-" + dParts[1] + "-" + dParts[0];
       
       try {
         let params = new URLSearchParams();
@@ -533,7 +536,7 @@
         params.append('name', nameVal);
         params.append('amount', amountVal);
         params.append('desc', descVal || "No Description");
-        params.append('selectedDate', dateVal); 
+        params.append('selectedDate', payloadDMY); 
         params.append('datetime', new Date().toISOString());
         params.append('txId', 'TXN' + Date.now());
 
@@ -612,7 +615,6 @@
 
     function convertDMYToISO(dateStr) {
       if (!dateStr) return "";
-      // If mobile fetches it as a native JavaScript Date object
       if (dateStr instanceof Date) {
         let y = dateStr.getFullYear();
         let m = String(dateStr.getMonth() + 1).padStart(2, '0');
@@ -620,105 +622,9 @@
         return y + "-" + m + "-" + d;
       }
       
-      // Convert to string safely and clean delimiters
       let cleanStr = String(dateStr).trim().split(/[ T]/)[0];
       cleanStr = cleanStr.replace(/\//g, '-'); 
       
-      // Return immediately if it's already structured in ISO format (yyyy-MM-dd)
-      if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-        return cleanStr;
-      }
-      
-      let parts = cleanStr.split('-');
-      if (parts.length === 3) {
-       let p0 = parts[0];
-        let p1 = parts[1];
-        let p2 = parts[2];
-        
-        // Match standard dd-MM-yyyy from sheet rows
-        if (p0.length <= 2 && p2.length === 4) {
-          return p2 + "-" + p1.padStart(2, '0') + "-" + p0.padStart(2, '0');
-        }
-        
-        // Handle mobile browser conversions to yyyy-MM-dd fallback structures
-        if (p0.length === 4) {
-          return p0 + "-" + p1.padStart(2, '0') + "-" + p2.padStart(2, '0');
-        }
-      }
-      return "";
-    }
-
-    function applySelectiveDateFilter() {
-      if (!rawDashboardData) return;
-
-      const startBound = $('filterStartDate').value; 
-      const endBound = $('filterEndDate').value;     
-
-      let filteredLogs = [];
-      let calculatedTotal = 0;
-
-      if (rawDashboardData.recent && rawDashboardData.recent.length > 0) {
-        filteredLogs = rawDashboardData.recent.filter(item => {
-          let rawDate = item.selectedDate || item.date || item.datetime || "";
-          let cleanItemDate = convertDMYToISO(rawDate);
-          
-          if (!cleanItemDate) return true; 
-          if (startBound && cleanItemDate < startBound) return false;
-          if (endBound && cleanItemDate > endBound) return false;
-          return true;
-        });
-      }
-
-      let tbody = $('recentTable').querySelector('tbody');
-      tbody.innerHTML = "";
-
-      if (filteredLogs.length > 0) {
-        $('noLogsMessage').classList.add('view-hidden');
-        $('recentTable').classList.remove('view-hidden');
-        
-        const logFragment = document.createDocumentFragment();
-        filteredLogs.forEach(r => {
-          const amt = parseFloat(r.amount || 0);
-          calculatedTotal += amt;
-
-          let displayDate = r.selectedDate || r.date || '';
-
-          let tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td style="color:var(--text-muted); font-size:12px;">${displayDate}</td>
-            <td><b>${r.name}</b></td>
-            <td>₹${amt.toFixed(2)}</td>
-            <td><span style="color:var(--text-muted)">${r.desc}</span></td>
-          `;
-          logFragment.appendChild(tr);
-        });
-        tbody.appendChild(logFragment);
-      } else {
-        $('noLogsMessage').classList.remove('view-hidden');
-        $('recentTable').classList.add('view-hidden');
-      }
-
-      $('totalVal').innerText = "₹" + calculatedTotal.toFixed(2);
-    }
-  })();
-  </script>
-  <script>
-      function convertDMYToISO(dateStr) {
-      if (!dateStr) return "";
-      
-      // Handle native JS Date objects if the mobile browser parses it ahead of time
-      if (dateStr instanceof Date) {
-        let y = dateStr.getFullYear();
-        let m = String(dateStr.getMonth() + 1).padStart(2, '0');
-        let d = String(dateStr.getDate()).padStart(2, '0');
-        return y + "-" + m + "-" + d;
-      }
-      
-      // Convert to string safely and clean delimiters
-      let cleanStr = String(dateStr).trim().split(/[ T]/)[0];
-      cleanStr = cleanStr.replace(/\//g, '-'); 
-      
-      // Return immediately if it's already structured in ISO format (yyyy-MM-dd)
       if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
         return cleanStr;
       }
@@ -729,24 +635,21 @@
         let p1 = parts[1];
         let p2 = parts[2];
         
-        // Match standard dd-MM-yyyy from sheet rows
         if (p0.length <= 2 && p2.length === 4) {
           return p2 + "-" + p1.padStart(2, '0') + "-" + p0.padStart(2, '0');
         }
-        
-        // Handle mobile browser conversions to yyyy-MM-dd fallback structures
         if (p0.length === 4) {
           return p0 + "-" + p1.padStart(2, '0') + "-" + p2.padStart(2, '0');
         }
       }
       return "";
     }
-
     function applySelectiveDateFilter() {
       if (!rawDashboardData) return;
 
-      const startBound = $('filterStartDate').value; 
-      const endBound = $('filterEndDate').value;     
+      // Safely process bounding limits through DMY normalization to bypass mobile input layout bugs
+      const startBound = convertDMYToISO($('filterStartDate').value); 
+      const endBound = convertDMYToISO($('filterEndDate').value);     
 
       let filteredLogs = [];
       let calculatedTotal = 0;
@@ -777,6 +680,12 @@
 
           let displayDate = r.selectedDate || r.date || '';
 
+          // Ensure dashboard table continues displaying strictly as dd-mm-yyyy on all screens
+          if (displayDate.includes('-') && displayDate.split('-')[0].length === 4) {
+            let p = displayDate.split('-');
+            displayDate = `${p[2]}-${p[1]}-${p[0]}`;
+          }
+
           let tr = document.createElement('tr');
           tr.innerHTML = `
             <td style="color:var(--text-muted); font-size:12px;">${displayDate}</td>
@@ -792,10 +701,14 @@
         $('recentTable').classList.add('view-hidden');
       }
 
-      $('totalVal').innerText = "₹" + calculatedTotal.toFixed(2);
+      // Exact original metric target retention match matching backend variables
+      if (rawDashboardData && !$('filterStartDate').value && !$('filterEndDate').value) {
+        $('totalVal').innerText = "₹" + parseFloat(rawDashboardData.totalCollection || 0).toFixed(2);
+      } else {
+        $('totalVal').innerText = "₹" + calculatedTotal.toFixed(2);
+      }
     }
   })();
-</script>
+  </script>
 </body>
 </html>
-
