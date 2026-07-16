@@ -3,12 +3,12 @@
   "name": "TransaPot Financial Transaction Tracker",
   "icons": [
     {
-      "src": "https://icons8.com",
+      "src": "app-icon.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://icons8.com",
+      "src": "app-icon.png",
       "type": "image/png",
       "sizes": "512x512"
     }
