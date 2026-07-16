@@ -1,800 +1,642 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TransaPot v2</title>
-  <style>
-    :root {
-      --bg-app: #0f172a;       /* Deep slate background */
-      --bg-card: #151f32;      /* Dark card profile tint */
-      --bg-input: #1e293b;     /* Slate input box background */
-      --text-main: #f8fafc;    /* Off-white readable text */
-      --text-muted: #94a3b8;   /* Muted gray for small captions */
-      --accent: #10b981;       /* Emerald accent match */
-      --accent-hover: #059669; /* Hover dark emerald green */
-      --border: #24334d;       /* Custom container border stroke */
-      --mint-hero: #a7f3d0;    /* Mint green branding header profile */
-      --error: #ef4444;        /* Crimson validation error color */
-    }
-
-    /* Global Base Reset Rules */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent; /* Fixes immediate UI click delay on mobile webview */
-    }
-
-    body {
-      background-color: var(--bg-app);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      padding: 16px;
-      line-height: 1.5;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Outer Wrapper Frame */
-    .app-wrapper {
-      width: 100%;
-      max-width: 440px;
-      background-color: var(--bg-app);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-      margin-bottom: 40px;
-      transform: translate3d(0,0,0); /* Forces mobile GPU acceleration */
-      will-change: transform, opacity;
-      backface-visibility: hidden;
-    }
-
-    /* Hero Branding Top Header */
-    .brand-hero {
-      background-color: var(--mint-hero);
-      color: #0f172a;
-      text-align: center;
-      padding: 40px 20px 60px 20px;
-      border-bottom-left-radius: 40px;
-      border-bottom-right-radius: 40px;
-    }
-
-    /* Rounded Avatar Frame Container */
-    .logo-circle {
-      width: 70px;
-      height: 70px;
-      background-color: #0f172a;
-      color: #ffffff;
-      font-size: 32px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      margin: 0 auto 16px auto;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-    
-    .font-icon {
-      font-size: 38px;
-    }
-
-    .brand-title {
-      font-size: 34px;
-      font-weight: 800;
-      margin: 0 0 4px 0;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-tagline {
-      font-size: 15px;
-      font-weight: 500;
-      margin: 0;
-      opacity: 0.85;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TransaPot v2</title>
+<style>
+:root {
+  --bg-app: #0f172a; /* Deep slate background */
+  --bg-card: #151f32; /* Dark card profile tint */
+  --bg-input: #1e293b; /* Slate input box background */
+  --text-main: #f8fafc; /* Off-white readable text */
+  --text-muted: #94a3b8; /* Muted gray for small captions */
+  --accent: #10b981; /* Emerald accent match */
+  --accent-hover: #059669; /* Hover dark emerald green */
+  --border: #24334d; /* Custom container border stroke */
+  --mint-hero: #a7f3d0; /* Mint green branding header profile */
+  --error: #ef4444; /* Crimson validation error color */
+}
+/* Global Base Reset Rules */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent; /* Fixes immediate UI click delay on mobile webview */
+}
+body {
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: 16px;
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Outer Wrapper Frame */
+.app-wrapper {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--bg-app);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  margin-bottom: 40px;
+  transform: translate3d(0,0,0); /* Forces mobile GPU acceleration */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+/* Hero Branding Top Header */
+.brand-hero {
+  background-color: var(--mint-hero);
+  color: #0f172a;
+  text-align: center;
+  padding: 40px 20px 60px 20px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+/* Rounded Avatar Frame Container */
+.logo-circle {
+  width: 70px;
+  height: 70px;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 16px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.font-icon {
+  font-size: 38px;
+}
+.brand-title {
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+.brand-tagline {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.85;
+}
+</style>
 </head>
 <body>
-  <style>
-    /* Overlapping Card Architecture blocks */
-    .connect-card, .dashboard-card, .form-card {
-      background-color: var(--bg-card);
-      margin: -35px 16px 24px 16px;
-      padding: 32px 24px;
-      border-radius: 24px;
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-      position: relative;
-    }
-    .dashboard-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+<style>
+/* Overlapping Card Architecture blocks */
+.connect-card, .dashboard-card, .form-card {
+  background-color: var(--bg-card);
+  margin: -35px 16px 24px 16px;
+  padding: 32px 24px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.dashboard-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card-headline {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+.card-subtext {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+/* Small Uppercase Form Labels */
+.field-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+/* Input Fields Setup */
+input, select, textarea {
+  width: 100%;
+  background-color: var(--bg-input) !important;
+  border: 1px solid #334155 !important;
+  color: #ffffff !important;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input:focus, select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+input::placeholder {
+  color: #475569;
+}
+/* Action Buttons Design profiles */
+.btn-solid {
+  width: 100%;
+  background-color: var(--accent) !important;
+  color: #ffffff !important;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  touch-action: manipulation;
+}
+.btn-solid:hover {
+  background-color: var(--accent-hover) !important;
+}
+.btn-solid:active {
+  transform: scale(0.98);
+}
+.btn-outlined {
+  width: 100%;
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  touch-action: manipulation;
+}
+.btn-outlined:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border-color: #475569 !important;
+}
+/* Rings Indicators for total counters */
+.metrics-circle-frame {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 12px solid var(--bg-input);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 35px 0;
+}
+.metrics-circle-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.metrics-circle-label {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.metrics-circle-amount {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+}
+.activity-section {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 30px;
+}
+.section-headline {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0 0 16px 0;
+}
+.logs-wrapper {
+  width: 100%;
+  min-height: 40px;
+}
+.empty-state-text {
+  color: var(--text-muted);
+  font-size: 14px;
+  opacity: 0.6;
+  text-align: center;
+  padding: 10px 0;
+}
+/* Core Data Tables layout styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th {
+  color: var(--text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--border);
+}
+table td {
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.01);
+}
+.status-msg {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+/* High-Performance Screen Hiding Modifier */
+.view-hidden {
+  display: none !important;
+}
+</style>
 
-    .card-headline {
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 700;
-      margin: 0 0 12px 0;
-    }
-
-    .card-subtext {
-      color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 0 0 24px 0;
-    }
-
-    /* Small Uppercase Form Labels */
-    .field-label {
-      display: block;
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-    }
-
-    /* Input Fields Setup */
-    input, select, textarea {
-      width: 100%;
-      background-color: var(--bg-input) !important;
-      border: 1px solid #334155 !important;
-      color: #ffffff !important;
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-size: 15px;
-      margin-top: 0;
-      margin-bottom: 20px;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--accent) !important;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-    }
-
-    input::placeholder {
-      color: #475569;
-    }
-
-    /* Action Buttons Design profiles */
-    .btn-solid {
-      width: 100%;
-      background-color: var(--accent) !important;
-      color: #ffffff !important;
-      font-size: 17px;
-      font-weight: 700;
-      padding: 16px;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      margin-top: 8px;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-      transition: background-color 0.15s ease, transform 0.1s ease;
-      touch-action: manipulation;
-    }
-
-    .btn-solid:hover {
-      background-color: var(--accent-hover) !important;
-    }
-
-    .btn-solid:active {
-      transform: scale(0.98);
-    }
-
-    .btn-outlined {
-      width: 100%;
-      background-color: transparent !important;
-      color: #ffffff !important;
-      border: 1px solid #334155 !important;
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
-      touch-action: manipulation;
-    }
-
-    .btn-outlined:hover {
-      background-color: rgba(255, 255, 255, 0.03) !important;
-      border-color: #475569 !important;
-    }
-
-    /* Rings Indicators for total counters */
-    .metrics-circle-frame {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      border: 12px solid var(--bg-input);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 10px 0 35px 0;
-    }
-
-    .metrics-circle-inner {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .metrics-circle-label {
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    .metrics-circle-amount {
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 800;
-    }
-
-    .activity-section {
-      width: 100%;
-      text-align: left;
-      margin-bottom: 30px;
-    }
-
-    .section-headline {
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin: 0 0 16px 0;
-    }
-
-    .logs-wrapper {
-      width: 100%;
-      min-height: 40px;
-    }
-
-    .empty-state-text {
-      color: var(--text-muted);
-      font-size: 14px;
-      opacity: 0.6;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    /* Core Data Tables layout styling */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    table th {
-      color: var(--text-muted);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      text-align: left;
-      padding: 8px 12px;
-      border-bottom: 2px solid var(--border);
-    }
-
-    table td {
-      padding: 12px;
-      font-size: 14px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    table tr:hover td {
-      background-color: rgba(255, 255, 255, 0.01);
-    }
-
-    .status-msg {
-      text-align: center;
-      margin-top: 12px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    /* High-Performance Screen Hiding Modifier */
-    .view-hidden {
-      display: none !important;
-    }
-  </style>
-  <!-- View 1: Setup Connection Gateway Registration Frame -->
-  <div id="registerView" class="app-wrapper view-hidden">
-    <header class="brand-hero">
-      <div class="logo-circle">P</div>
-      <h1 class="brand-title">TransacPOT</h1>
-      <p class="brand-tagline">Your transactions, simplified.</p>
-    </header>
-    <div class="connect-card">
-      <h2 class="card-headline">Connect Your Sheet</h2>
-      <p class="card-subtext">Enter the setup code and paste your Google Sheet link. This is needed only once.</p>
-      <form id="registerForm" onsubmit="event.preventDefault(); return false;">
-        <label class="field-label">SETUP CODE</label>
-        <input type="password" id="setupCodeInput" placeholder="••••" required>
-        
-        <label class="field-label">GOOGLE SHEET LINK</label>
-        <input type="url" id="sheetUrlInput" placeholder="https://google.com..." required>
-        
-        <button type="button" id="connectBtn" class="btn-solid">Connect My Sheet</button>
-      </form>
-      <div id="regMessage" class="status-msg"></div>
-    </div>
+<!-- View 1: Setup Connection Gateway Registration Frame -->
+<div id="registerView" class="app-wrapper view-hidden">
+  <header class="brand-hero">
+    <div class="logo-circle">P</div>
+    <h1 class="brand-title">TransacPOT</h1>
+    <p class="brand-tagline">Your transactions, simplified.</p>
+  </header>
+  <div class="connect-card">
+    <h2 class="card-headline">Connect Your Sheet</h2>
+    <p class="card-subtext">Enter the setup code and paste your Google Sheet link. This is needed only once.</p>
+    <form id="registerForm" onsubmit="event.preventDefault(); return false;">
+      <label class="field-label">SETUP CODE</label>
+      <input type="password" id="setupCodeInput" placeholder="••••" required>
+      <label class="field-label">GOOGLE SHEET LINK</label>
+      <input type="url" id="sheetUrlInput" placeholder="https://google.com..." required>
+      <button type="button" id="connectBtn" class="btn-solid">Connect My Sheet</button>
+    </form>
+    <div id="regMessage" class="status-msg"></div>
   </div>
+</div>
 
-  <!-- View 2: Transaction Logging Data Input Form Frame -->
-  <div id="entryView" class="app-wrapper view-hidden">
-    <header class="brand-hero">
-      <div class="logo-circle font-icon">🍯</div>
-      <h1 class="brand-title">TransaPot</h1>
-      <p class="brand-tagline">Your transactions, simplified.</p>
-    </header>
-    <div class="form-card">
-      <h2 class="card-headline">Log Transaction</h2>
-      <p class="card-subtext">Add details to update your spreadsheet in real-time.</p>
-      <form id="txForm" onsubmit="event.preventDefault(); return false;">
-        <label class="field-label">NAME / TITLE</label>
-        <input type="text" id="nameInput" placeholder="e.g., Office Supplies" required>
-        
-        <label class="field-label">AMOUNT (₹)</label>
-        <input type="number" step="0.01" id="amountInput" placeholder="0.00" required>
-
-        <label class="field-label">TRANSACTION DATE</label>
-        <input type="date" id="dateInput" required>
-        
-        <label class="field-label">DESCRIPTION / CATEGORY (OPTIONAL)</label>
-        <input type="text" id="descInput" placeholder="e.g., Maintenance">
-        
-        <button type="button" id="saveBtn" class="btn-solid">Save Transaction</button>
-      </form>
-      <button type="button" id="viewDashboardBtn" class="btn-outlined" style="margin-top: 12px;">View Dashboard Summary →</button>
-      <div id="txMessage" class="status-msg"></div>
-    </div>
+<!-- View 2: Transaction Logging Data Input Form Frame -->
+<div id="entryView" class="app-wrapper view-hidden">
+  <header class="brand-hero">
+    <div class="logo-circle font-icon">🍯</div>
+    <h1 class="brand-title">TransaPot</h1>
+    <p class="brand-tagline">Your transactions, simplified.</p>
+  </header>
+  <div class="form-card">
+    <h2 class="card-headline">Log Transaction</h2>
+    <p class="card-subtext">Add details to update your spreadsheet in real-time.</p>
+    <form id="txForm" onsubmit="event.preventDefault(); return false;">
+      <label class="field-label">NAME / TITLE</label>
+      <input type="text" id="nameInput" placeholder="e.g., Office Supplies" required>
+      <label class="field-label">AMOUNT (₹)</label>
+      <input type="number" step="0.01" id="amountInput" placeholder="0.00" required>
+      <label class="field-label">TRANSACTION DATE</label>
+      <input type="date" id="dateInput" required>
+      <label class="field-label">DESCRIPTION / CATEGORY (OPTIONAL)</label>
+      <input type="text" id="descInput" placeholder="e.g., Maintenance">
+      <button type="button" id="saveBtn" class="btn-solid">Save Transaction</button>
+    </form>
+    <button type="button" id="viewDashboardBtn" class="btn-outlined" style="margin-top: 12px;">View Dashboard Summary →</button>
+    <div id="txMessage" class="status-msg"></div>
   </div>
+</div>
 
-  <!-- View 3: Balanced Analytics Metrics Dashboard View -->
-  <div id="dashboardView" class="app-wrapper view-hidden">
-    <header class="brand-hero">
-      <div class="logo-circle font-icon">🍯</div>
-      <h1 class="brand-title">TransaPot</h1>
-      <p class="brand-tagline">Your transactions, simplified.</p>
-    </header>
-    <div class="dashboard-card">
-      <div class="metrics-circle-frame">
-        <div class="metrics-circle-inner">
-          <span class="metrics-circle-label">TOTAL COLLECTION</span>
-          <span id="totalVal" class="metrics-circle-amount">₹0.00</span>
-        </div>
+<!-- View 3: Balanced Analytics Metrics Dashboard View -->
+<div id="dashboardView" class="app-wrapper view-hidden">
+  <header class="brand-hero">
+    <div class="logo-circle font-icon">🍯</div>
+    <h1 class="brand-title">TransaPot</h1>
+    <p class="brand-tagline">Your transactions, simplified.</p>
+  </header>
+  <div class="dashboard-card">
+    <div class="metrics-circle-frame">
+      <div class="metrics-circle-inner">
+        <span class="metrics-circle-label">TOTAL COLLECTION</span>
+        <span id="totalVal" class="metrics-circle-amount">₹0.00</span>
       </div>
-
-      <!-- Global Empty Spreadsheet Status Alert Box banner -->
-      <div id="globalEmptyStateAlert" class="view-hidden" style="width: 100%; background: rgba(239, 68, 68, 0.1); border: 1px dashed var(--error); padding: 14px; border-radius: 12px; margin-bottom: 24px; text-align: center;">
-        <span style="color: var(--error); font-size: 13px; font-weight: 700; display: block; margin-bottom: 2px;">⚠️ NO DATA DETECTED</span>
-        <span style="color: var(--text-muted); font-size: 12px;">Your connected Google Spreadsheet database is completely blank. Add a transaction first.</span>
-      </div>
-
-      <!-- Dynamic Item Log Listing Module -->
-      <div class="activity-section">
-        <h3 class="section-headline">COLLECTIONS ACTIVITY</h3>
-        
-        <!-- Selective Date View Filter Interface Component -->
-        <div style="background: var(--bg-input); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border);">
-          <span class="field-label" style="margin-bottom: 8px; color: var(--accent);">FILTER BY DATE RANGE</span>
-          <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-            <div style="flex: 1;">
-              <span class="field-label" style="font-size: 9px;">FROM</span>
-              <input type="date" id="filterStartDate" style="margin-bottom: 0; padding: 10px; font-size: 13px;">
-            </div>
-            <div style="flex: 1;">
-              <span class="field-label" style="font-size: 9px;">TO</span>
-              <input type="date" id="filterEndDate" style="margin-bottom: 0; padding: 10px; font-size: 13px;">
-            </div>
+    </div>
+    <!-- Global Empty Spreadsheet Status Alert Box banner -->
+    <div id="globalEmptyStateAlert" class="view-hidden" style="width: 100%; background: rgba(239, 68, 68, 0.1); border: 1px dashed var(--error); padding: 14px; border-radius: 12px; margin-bottom: 24px; text-align: center;">
+      <span style="color: var(--error); font-size: 13px; font-weight: 700; display: block; margin-bottom: 2px;">⚠ NO DATA DETECTED</span>
+      <span style="color: var(--text-muted); font-size: 12px;">Your connected Google Spreadsheet database is completely blank. Add a transaction first.</span>
+    </div>
+    <!-- Dynamic Item Log Listing Module -->
+    <div class="activity-section">
+      <h3 class="section-headline">COLLECTIONS ACTIVITY</h3>
+      <!-- Selective Date View Filter Interface Component -->
+      <div style="background: var(--bg-input); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border);">
+        <span class="field-label" style="margin-bottom: 8px; color: var(--accent);">FILTER BY DATE RANGE</span>
+        <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+          <div style="flex: 1;">
+            <span class="field-label" style="font-size: 9px;">FROM</span>
+            <input type="date" id="filterStartDate" style="margin-bottom: 0; padding: 10px; font-size: 13px;">
           </div>
-          <button type="button" id="applyFilterBtn" class="btn-solid" style="padding: 10px; font-size: 14px; margin-top: 0;">Apply Filter</button>
+          <div style="flex: 1;">
+            <span class="field-label" style="font-size: 9px;">TO</span>
+            <input type="date" id="filterEndDate" style="margin-bottom: 0; padding: 10px; font-size: 13px;">
+          </div>
         </div>
-
-        <div id="activityLogsContainer" class="logs-wrapper">
-          <div id="noLogsMessage" class="empty-state-text">No logs found for this period.</div>
-          <table id="recentTable" class="view-hidden">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Item</th>
-                <th>Amount</th>
-                <th>Category</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+        <button type="button" id="applyFilterBtn" class="btn-solid" style="padding: 10px; font-size: 14px; margin-top: 0;">Apply Filter</button>
       </div>
-      <button type="button" id="addEntryBtn" class="btn-outlined">← Add Another Entry</button>
+      <div id="activityLogsContainer" class="logs-wrapper">
+        <div id="noLogsMessage" class="empty-state-text">No logs found for this period.</div>
+        <table id="recentTable" class="view-hidden">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Item</th>
+              <th>Amount</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
+    <button type="button" id="addEntryBtn" class="btn-outlined">← Add Another Entry</button>
   </div>
-  <script>
-  (function() {
-    const $ = id => document.getElementById(id);
-    let rawDashboardData = null; 
+</div>
+<script>
+(function() {
+  const $ = id => document.getElementById(id);
+  let rawDashboardData = null;
+  
+  // !!! MAKE SURE TO REPLACE THIS LINK STRING WITH YOUR REAL CURRENT DEPLOYED WEB APP URL !!!
+  const targetUrl = "https://google.com";
 
-    // !!! MAKE SURE TO REPLACE THIS LINK STRING WITH YOUR REAL CURRENT DEPLOYED WEB APP URL !!!
-    const targetUrl = "https://script.google.com/macros/s/AKfycbwKRPK7cxnfFteehJVck88yZIxBY7GgnDWTHbgLo3upzbkqXIHKVCiD-L_gz5_4IKnxTA/exec";
-
-    function navigateToView(targetId) {
-      ['registerView', 'entryView', 'dashboardView'].forEach(id => {
-        const el = $(id);
-        if (el) el.classList.add('view-hidden');
-      });
-      const target = $(targetId);
-      if (target) target.classList.remove('view-hidden');
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('reset') === 'true') {
-      localStorage.clear();
-      sessionStorage.clear();
-    }
-
-    function initAppView() {
-      if (localStorage.getItem('tp_userId')) {
-        navigateToView('entryView');
-      } else {
-        navigateToView('registerView');
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const today = new Date().toISOString().split('T')[0];
-      if ($('dateInput')) $('dateInput').value = today;
-      
-      const now = new Date();
-      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-      if ($('filterStartDate')) $('filterStartDate').value = firstDay;
-      if ($('filterEndDate')) $('filterEndDate').value = today;
-
-      $('applyFilterBtn').addEventListener('click', function() {
-        applySelectiveDateFilter();
-      });
-
-      initAppView();
+  function navigateToView(targetId) {
+    ['registerView', 'entryView', 'dashboardView'].forEach(id => {
+      const el = $(id);
+      if (el) el.classList.add('view-hidden');
     });
+    const target = $(targetId);
+    if (target) target.classList.remove('view-hidden');
+  }
 
-    const handleRegistration = async () => {
-      const codeVal = $('setupCodeInput').value.trim();
-      const urlVal = $('sheetUrlInput').value.trim();
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('reset') === 'true') {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
 
-      if (!codeVal || !urlVal) {
-        $('regMessage').style.color = 'var(--error)';
-        $('regMessage').innerText = "Please fill out all configuration settings.";
-        return;
-      }
-
-      $('regMessage').innerText = "Connecting configuration...";
-      $('regMessage').style.color = 'var(--text-muted)';
-      $('connectBtn').disabled = true;
-      
-      try {
-        let params = new URLSearchParams();
-        params.append('action', 'register');
-        params.append('setupCode', codeVal);
-        params.append('sheetUrl', urlVal);
-        
-        let resp = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: params
-        });
-        
-        let result = await resp.json();
-        if (!result.ok) throw new Error(result.error || "Failed registration setup validation.");
-
-        localStorage.setItem('tp_userId', result.userId);
-        localStorage.setItem('tp_syncToken', result.syncToken);
-
-        navigateToView('entryView');
-      } catch(err) {
-        $('regMessage').style.color = 'var(--error)';
-        $('regMessage').innerText = "Registration Error: " + err.message;
-      } finally {
-        $('connectBtn').disabled = false;
-      }
-    };
-
-    $('connectBtn').addEventListener('click', handleRegistration);
-
-    const handleTransactionSubmit = async () => {
-      const nameVal = $('nameInput').value.trim();
-      const amountVal = $('amountInput').value.trim();
-      const dateVal = $('dateInput').value; 
-      const descVal = $('descInput').value.trim();
-
-      if (!nameVal || !amountVal || !dateVal) {
-        $('txMessage').style.color = 'var(--error)';
-        $('txMessage').innerText = "Please fill out Name, Amount, and Date fields.";
-        return;
-      }
-
-      $('txMessage').innerText = "Saving data row...";
-      $('txMessage').style.color = 'var(--text-muted)';
-      $('saveBtn').disabled = true;
-      
-      try {
-        let params = new URLSearchParams();
-        params.append('action', 'append');
-        params.append('userId', localStorage.getItem('tp_userId') || '');
-        params.append('syncToken', localStorage.getItem('tp_syncToken') || '');
-        params.append('name', nameVal);
-        params.append('amount', amountVal);
-        params.append('desc', descVal || "No Description");
-        params.append('selectedDate', dateVal); 
-        params.append('datetime', new Date().toISOString());
-        params.append('txId', 'TXN' + Date.now());
-
-        let resp = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: params
-        });
-        
-        let result = await resp.json();
-        if (!result.ok) throw new Error(result.error || "Failed data append.");
-
-        $('txMessage').style.color = 'var(--accent)';
-        $('txMessage').innerText = "✔ Transaction saved successfully!";
-        
-        $('nameInput').value = '';
-        $('amountInput').value = '';
-        $('descInput').value = '';
-        $('dateInput').value = new Date().toISOString().split('T')[0];
-        
-      } catch(err) {
-        $('txMessage').style.color = 'var(--error)';
-        $('txMessage').innerText = "Error: " + err.message;
-      } finally {
-        $('saveBtn').disabled = false;
-      }
-    };
-
-    $('saveBtn').addEventListener('click', handleTransactionSubmit);
-
-    $('viewDashboardBtn').addEventListener('click', () => {
-      navigateToView('dashboardView');
-      loadDashboard();
-    });
-
-    $('addEntryBtn').addEventListener('click', () => {
+  function initAppView() {
+    if (localStorage.getItem('tp_userId')) {
       navigateToView('entryView');
-      $('txMessage').innerText = '';
+    } else {
+      navigateToView('registerView');
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const today = new Date().toISOString().split('T')[0];
+    if ($('dateInput')) $('dateInput').value = today;
+    
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    if ($('filterStartDate')) $('filterStartDate').value = firstDay;
+    if ($('filterEndDate')) $('filterEndDate').value = today;
+    
+    $('applyFilterBtn').addEventListener('click', function() {
+      applySelectiveDateFilter();
     });
+    initAppView();
+  });
 
-    async function loadDashboard() {
-      $('totalVal').innerText = "Fetching...";
-      $('applyFilterBtn').disabled = true;
-      
-      try {
-        let params = new URLSearchParams();
-        params.append('action', 'dashboard');
-        params.append('userId', localStorage.getItem('tp_userId') || '');
-        params.append('syncToken', localStorage.getItem('tp_syncToken') || '');
+  const handleRegistration = async () => {
+    const codeVal = $('setupCodeInput').value.trim();
+    const urlVal = $('sheetUrlInput').value.trim();
+    if (!codeVal || !urlVal) {
+      $('regMessage').style.color = 'var(--error)';
+      $('regMessage').innerText = "Please fill out all configuration settings.";
+      return;
+    }
+    $('regMessage').innerText = "Connecting configuration...";
+    $('regMessage').style.color = 'var(--text-muted)';
+    $('connectBtn').disabled = true;
 
-        let resp = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: params
-        });
-        let result = await resp.json();
-        if (!result.ok) throw new Error(result.error || "Failed dashboard parsing.");
-
-        rawDashboardData = result; 
-        
-        if (!result.recent || result.recent.length === 0) {
-          $('globalEmptyStateAlert').classList.remove('view-hidden');
+    try {
+      // Approach 2: Generate a random local token if it doesn't exist yet
+      let cryptoToken = localStorage.getItem('tp_cryptoToken');
+      if (!cryptoToken) {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+          cryptoToken = crypto.randomUUID();
         } else {
-          $('globalEmptyStateAlert').classList.add('view-hidden');
+          cryptoToken = 'tok-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
         }
-
-        applySelectiveDateFilter();
-
-      } catch(err) {
-        console.error("Dashboard error:", err);
-        $('totalVal').innerText = "₹0.00";
-      } finally {
-        $('applyFilterBtn').disabled = false;
+        localStorage.setItem('tp_cryptoToken', cryptoToken);
       }
+
+      let params = new URLSearchParams();
+      params.append('action', 'register');
+      params.append('setupCode', codeVal);
+      params.append('sheetUrl', urlVal);
+      params.append('cryptoToken', cryptoToken);
+
+      let resp = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: params
+      });
+      let result = await resp.json();
+      if (!result.ok) throw new Error(result.error || "Failed registration setup validation.");
+      
+      localStorage.setItem('tp_userId', result.userId);
+      localStorage.setItem('tp_syncToken', result.syncToken);
+      navigateToView('entryView');
+    } catch(err) {
+      $('regMessage').style.color = 'var(--error)';
+      $('regMessage').innerText = "Registration Error: " + err.message;
+    } finally {
+      $('connectBtn').disabled = false;
     }
+  };
 
-    function convertDMYToISO(dateStr) {
-      if (!dateStr) return "";
-      // If mobile fetches it as a native JavaScript Date object
-      if (dateStr instanceof Date) {
-        let y = dateStr.getFullYear();
-        let m = String(dateStr.getMonth() + 1).padStart(2, '0');
-        let d = String(dateStr.getDate()).padStart(2, '0');
-        return y + "-" + m + "-" + d;
-      }
-      
-      // Convert to string safely and clean delimiters
-      let cleanStr = String(dateStr).trim().split(/[ T]/)[0];
-      cleanStr = cleanStr.replace(/\//g, '-'); 
-      
-      // Return immediately if it's already structured in ISO format (yyyy-MM-dd)
-      if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-        return cleanStr;
-      }
-      
-      let parts = cleanStr.split('-');
-      if (parts.length === 3) {
-       let p0 = parts[0];
-        let p1 = parts[1];
-        let p2 = parts[2];
-        
-        // Match standard dd-MM-yyyy from sheet rows
-        if (p0.length <= 2 && p2.length === 4) {
-          return p2 + "-" + p1.padStart(2, '0') + "-" + p0.padStart(2, '0');
-        }
-        
-        // Handle mobile browser conversions to yyyy-MM-dd fallback structures
-        if (p0.length === 4) {
-          return p0 + "-" + p1.padStart(2, '0') + "-" + p2.padStart(2, '0');
-        }
-      }
-      return "";
+  $('connectBtn').addEventListener('click', handleRegistration);
+  const handleTransactionSubmit = async () => {
+    const nameVal = $('nameInput').value.trim();
+    const amountVal = $('amountInput').value.trim();
+    const dateVal = $('dateInput').value;
+    const descVal = $('descInput').value.trim();
+    
+    if (!nameVal || !amountVal || !dateVal) {
+      $('txMessage').style.color = 'var(--error)';
+      $('txMessage').innerText = "Please fill out Name, Amount, and Date fields.";
+      return;
     }
+    $('txMessage').innerText = "Saving data row...";
+    $('txMessage').style.color = 'var(--text-muted)';
+    $('saveBtn').disabled = true;
 
-    function applySelectiveDateFilter() {
-      if (!rawDashboardData) return;
+    try {
+      let params = new URLSearchParams();
+      params.append('action', 'append');
+      params.append('userId', localStorage.getItem('tp_userId') || '');
+      params.append('syncToken', localStorage.getItem('tp_syncToken') || '');
+      params.append('cryptoToken', localStorage.getItem('tp_cryptoToken') || '');
+      params.append('name', nameVal);
+      params.append('amount', amountVal);
+      params.append('desc', descVal || "No Description");
+      params.append('selectedDate', dateVal); // Handled as yyyy-mm-dd from input to backend conversion
+      params.append('datetime', new Date().toISOString());
+      params.append('txId', 'TXN' + Date.now());
 
-      const startBound = $('filterStartDate').value; 
-      const endBound = $('filterEndDate').value;     
+      let resp = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: params
+      });
+      let result = await resp.json();
+      if (!result.ok) throw new Error(result.error || "Failed data append.");
 
-      let filteredLogs = [];
-      let calculatedTotal = 0;
+      $('txMessage').style.color = 'var(--accent)';
+      $('txMessage').innerText = "✔ Transaction saved successfully!";
+      $('nameInput').value = '';
+      $('amountInput').value = '';
+      $('descInput').value = '';
+      $('dateInput').value = new Date().toISOString().split('T')[0];
+    } catch(err) {
+      $('txMessage').style.color = 'var(--error)';
+      $('txMessage').innerText = "Error: " + err.message;
+    } finally {
+      $('saveBtn').disabled = false;
+    }
+  };
 
-      if (rawDashboardData.recent && rawDashboardData.recent.length > 0) {
-        filteredLogs = rawDashboardData.recent.filter(item => {
-          let rawDate = item.selectedDate || item.date || item.datetime || "";
-          let cleanItemDate = convertDMYToISO(rawDate);
-          
-          if (!cleanItemDate) return true; 
-          if (startBound && cleanItemDate < startBound) return false;
-          if (endBound && cleanItemDate > endBound) return false;
-          return true;
-        });
-      }
+  $('saveBtn').addEventListener('click', handleTransactionSubmit);
 
-      let tbody = $('recentTable').querySelector('tbody');
-      tbody.innerHTML = "";
+  $('viewDashboardBtn').addEventListener('click', () => {
+    navigateToView('dashboardView');
+    loadDashboard();
+  });
 
-      if (filteredLogs.length > 0) {
-        $('noLogsMessage').classList.add('view-hidden');
-        $('recentTable').classList.remove('view-hidden');
-        
-        const logFragment = document.createDocumentFragment();
-        filteredLogs.forEach(r => {
-          const amt = parseFloat(r.amount || 0);
-          calculatedTotal += amt;
+  $('addEntryBtn').addEventListener('click', () => {
+    navigateToView('entryView');
+    $('txMessage').innerText = '';
+  });
 
-          let displayDate = r.selectedDate || r.date || '';
-
-          let tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td style="color:var(--text-muted); font-size:12px;">${displayDate}</td>
-            <td><b>${r.name}</b></td>
-            <td>₹${amt.toFixed(2)}</td>
-            <td><span style="color:var(--text-muted)">${r.desc}</span></td>
-          `;
-          logFragment.appendChild(tr);
-        });
-        tbody.appendChild(logFragment);
+  async function loadDashboard() {
+    $('totalVal').innerText = "Fetching...";
+    $('applyFilterBtn').disabled = true;
+    try {
+      let params = new URLSearchParams();
+      params.append('action', 'dashboard');
+      params.append('userId', localStorage.getItem('tp_userId') || '');
+      params.append('syncToken', localStorage.getItem('tp_syncToken') || '');
+      params.append('cryptoToken', localStorage.getItem('tp_cryptoToken') || '');
+      
+      let resp = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: params
+      });
+      let result = await resp.json();
+      if (!result.ok) throw new Error(result.error || "Failed dashboard parsing.");
+      
+      rawDashboardData = result;
+      if (!result.recent || result.recent.length === 0) {
+        $('globalEmptyStateAlert').classList.remove('view-hidden');
       } else {
-        $('noLogsMessage').classList.remove('view-hidden');
-        $('recentTable').classList.add('view-hidden');
+        $('globalEmptyStateAlert').classList.add('view-hidden');
       }
-
-      $('totalVal').innerText = "₹" + calculatedTotal.toFixed(2);
+      applySelectiveDateFilter();
+    } catch(err) {
+      console.error("Dashboard error:", err);
+      $('totalVal').innerText = "₹0.00";
+    } finally {
+      $('applyFilterBtn').disabled = false;
     }
-  })();
-  </script>
-  <script>
-      function convertDMYToISO(dateStr) {
-      if (!dateStr) return "";
-      
-      // Handle native JS Date objects if the mobile browser parses it ahead of time
-      if (dateStr instanceof Date) {
-        let y = dateStr.getFullYear();
-        let m = String(dateStr.getMonth() + 1).padStart(2, '0');
-        let d = String(dateStr.getDate()).padStart(2, '0');
-        return y + "-" + m + "-" + d;
+  }
+
+  function convertDMYToISO(dateStr) {
+    if (!dateStr) return "";
+    let cleanStr = String(dateStr).trim().split(/[ T]/)[0];
+    cleanStr = cleanStr.replace(/\//g, '-');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
+      return cleanStr;
+    }
+    let parts = cleanStr.split('-');
+    if (parts.length === 3) {
+      let p0 = parts[0];
+      let p1 = parts[1];
+      let p2 = parts[2];
+      if (p0.length <= 2 && p2.length === 4) {
+        return p2 + "-" + p1.padStart(2, '0') + "-" + p0.padStart(2, '0');
       }
-      
-      // Convert to string safely and clean delimiters
-      let cleanStr = String(dateStr).trim().split(/[ T]/)[0];
-      cleanStr = cleanStr.replace(/\//g, '-'); 
-      
-      // Return immediately if it's already structured in ISO format (yyyy-MM-dd)
-      if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
-        return cleanStr;
+      if (p0.length === 4) {
+        return p0 + "-" + p1.padStart(2, '0') + "-" + p2.padStart(2, '0');
       }
-      
-      let parts = cleanStr.split('-');
-      if (parts.length === 3) {
-        let p0 = parts[0];
-        let p1 = parts[1];
-        let p2 = parts[2];
-        
-        // Match standard dd-MM-yyyy from sheet rows
-        if (p0.length <= 2 && p2.length === 4) {
-          return p2 + "-" + p1.padStart(2, '0') + "-" + p0.padStart(2, '0');
-        }
-        
-        // Handle mobile browser conversions to yyyy-MM-dd fallback structures
-        if (p0.length === 4) {
-          return p0 + "-" + p1.padStart(2, '0') + "-" + p2.padStart(2, '0');
-        }
-      }
-      return "";
+    }
+    return "";
+  }
+
+  function applySelectiveDateFilter() {
+    if (!rawDashboardData) return;
+    const startBound = $('filterStartDate').value;
+    const endBound = $('filterEndDate').value;
+    let filteredLogs = [];
+    let calculatedTotal = 0;
+
+    if (rawDashboardData.recent && rawDashboardData.recent.length > 0) {
+      filteredLogs = rawDashboardData.recent.filter(item => {
+        let rawDate = item.selectedDate || item.date || item.datetime || "";
+        let cleanItemDate = convertDMYToISO(rawDate);
+        if (!cleanItemDate) return true;
+        if (startBound && cleanItemDate < startBound) return false;
+        if (endBound && cleanItemDate > endBound) return false;
+        return true;
+      });
     }
 
-    function applySelectiveDateFilter() {
-      if (!rawDashboardData) return;
+    let tbody = $('recentTable').querySelector('tbody');
+    tbody.innerHTML = "";
 
-      const startBound = $('filterStartDate').value; 
-      const endBound = $('filterEndDate').value;     
-
-      let filteredLogs = [];
-      let calculatedTotal = 0;
-
-      if (rawDashboardData.recent && rawDashboardData.recent.length > 0) {
-        filteredLogs = rawDashboardData.recent.filter(item => {
-          let rawDate = item.selectedDate || item.date || item.datetime || "";
-          let cleanItemDate = convertDMYToISO(rawDate);
-          
-          if (!cleanItemDate) return true; 
-          if (startBound && cleanItemDate < startBound) return false;
-          if (endBound && cleanItemDate > endBound) return false;
-          return true;
-        });
-      }
-
-      let tbody = $('recentTable').querySelector('tbody');
-      tbody.innerHTML = "";
-
-      if (filteredLogs.length > 0) {
-        $('noLogsMessage').classList.add('view-hidden');
-        $('recentTable').classList.remove('view-hidden');
-        
-        const logFragment = document.createDocumentFragment();
-        filteredLogs.forEach(r => {
-          const amt = parseFloat(r.amount || 0);
-          calculatedTotal += amt;
-
-          let displayDate = r.selectedDate || r.date || '';
-
-          let tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td style="color:var(--text-muted); font-size:12px;">${displayDate}</td>
-            <td><b>${r.name}</b></td>
-            <td>₹${amt.toFixed(2)}</td>
-            <td><span style="color:var(--text-muted)">${r.desc}</span></td>
-          `;
-          logFragment.appendChild(tr);
-        });
-        tbody.appendChild(logFragment);
-      } else {
-        $('noLogsMessage').classList.remove('view-hidden');
-        $('recentTable').classList.add('view-hidden');
-      }
-
-      $('totalVal').innerText = "₹" + calculatedTotal.toFixed(2);
+    if (filteredLogs.length > 0) {
+      $('noLogsMessage').classList.add('view-hidden');
+      $('recentTable').classList.remove('view-hidden');
+      const logFragment = document.createDocumentFragment();
+      
+      filteredLogs.forEach(r => {
+        const amt = parseFloat(r.amount || 0);
+        calculatedTotal += amt;
+        let displayDate = r.selectedDate || r.date || '';
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="color:var(--text-muted); font-size:12px;">${displayDate}</td>
+          <td><b>${r.name}</b></td>
+          <td>₹${amt.toFixed(2)}</td>
+          <td><span style="color:var(--text-muted)">${r.desc}</span></td>
+        `;
+        logFragment.appendChild(tr);
+      });
+      tbody.appendChild(logFragment);
+    } else {
+      $('noLogsMessage').classList.remove('view-hidden');
+      $('recentTable').classList.add('view-hidden');
     }
-  })();
+    $('totalVal').innerText = "₹" + calculatedTotal.toFixed(2);
+  }
+})();
 </script>
 </body>
 </html>
